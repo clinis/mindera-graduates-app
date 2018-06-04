@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { Button, View, Text, ListView, SectionList, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator } from 'react-navigation';
 import { Card } from 'react-native-elements'
 
 
@@ -15,6 +15,8 @@ const events = [
   {title: "Graduate Program", data: ['First day', 'Second day', 'Last day']},
   {title: 'Meet Mindera Code & Culture', data: ['Day 19', 'Day 20']},
 ];
+
+const dayList = ["List 01", "List 02", "List 03", "List 04", "List 05", "List 06", "List 07", "List 08", "List 09", "List 10"]
 
 class EventsScreen extends React.Component {
   constructor(props) {
@@ -27,7 +29,9 @@ class EventsScreen extends React.Component {
   render() {
     return (
       <View style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: 'lightgrey'}} />
+        <View style={{flex: 1, backgroundColor: 'lightgrey'}}
+        />
+
         <View style={{flex: 2}}>
           <FlatList
             data={this.state.events}
@@ -39,7 +43,8 @@ class EventsScreen extends React.Component {
                   data={item.data}
                   renderItem={({item}) => (
                     <TouchableWithoutFeedback
-                      onPress={() => alert('This is a button!')}
+                      /*onPress={() => alert('This is a button!')}*/
+                      onPress={() => this.props.navigation.navigate('Day')}
                     >
                       <Card
                         title={item}
@@ -52,60 +57,23 @@ class EventsScreen extends React.Component {
               </View>
             )}
           />
-
-
         </View>
-        {/*<View style={{flex: 3}}>
-          {this.state.sections.map( item => {
-            return(
-              <View>
-                <Text style={{ marginTop: 10, fontWeight: 'bold'}}>{item.title}</Text>
-                <FlatList
-                  horizontal
-                  data={item.data}
-                  renderItem={({ item: rowData }) => {
-                    return (
-                      <Card
-                        title={rowData}
-                        containerStyle={{ padding: 0, height: 160, width: 160 }}
-                      >
-                      </Card>
-                    );
-                  }}
-                  keyExtractor={(item, index) => index}
-                />
-              </View>
-            )
-          })}
-        </View>*/}
-        {/* <View style={{flex: 4}}>
-          <FlatList
-            horizontal
-            data={this.state.data}
-            renderItem={({ item: rowData }) => {
-              return (
-                <View>
-                  <Text style={{fontWeight: 'bold'}}>{rowData.title}</Text>
-                  {rowData.data.map( cartao => {
-                    return (
-                      <Card
-                        title={null}
-                        image={{ url: "http://via.placeholder.com/160x160" }}
-                        containerStyle={{ padding: 0, width: 160 }}
-                      >
-                        <Text style={{ marginBottom: 10 }}>
-                          {cartao}
-                        </Text>
-                      </Card>
-                    )
-                  })}
+      </View>
+    );
+  }
+}
 
-                </View>
-              );
-            }}
-            keyExtractor={(item, index) => index}
-          />
-        </View>*/}
+class DayScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>Day Screen</Text>
+
+        <Button
+          title="Go to Home"
+          onPress={() => this.props.navigation.navigate('Events')}
+        />
+
       </View>
     );
   }
@@ -117,10 +85,10 @@ class VacanciesScreen extends React.Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Vacancies Screen</Text>
         <Button
-          title="Go to Details"
+          title="Go to Options"
           onPress={() => {
             /* 1. Navigate to the Details route with params */
-            this.props.navigation.navigate('Details', {
+            this.props.navigation.navigate('Options', {
               itemId: 86,
               otherParam: 'anything',
             });
@@ -131,7 +99,7 @@ class VacanciesScreen extends React.Component {
   }
 }
 
-class DetailsScreen extends React.Component {
+class OptionsScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('otherParam', 'A Nested Details Screen'),
@@ -151,12 +119,12 @@ class DetailsScreen extends React.Component {
         <Text>otherParam: {JSON.stringify(otherParam)}</Text>
 
         <Button
-          title="Go to Details... again"
-          onPress={() => this.props.navigation.push('Details')}
+          title="Go to Options... again"
+          onPress={() => this.props.navigation.push('Options')}
         />
         <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Events')}
+          title="Go to Events (Home)"
+          onPress={() => this.props.navigation.navigate('Home')}
         />
         <Button
           title="Go back"
@@ -172,10 +140,20 @@ class DetailsScreen extends React.Component {
   }
 }
 
-const TabNav = createMaterialTopTabNavigator(
+const TabNav = TabNavigator(
   {
-    Events: EventsScreen,
-    Vacancies: VacanciesScreen
+    Home: {
+      screen: EventsScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Events',
+      }),
+    },
+    Vacancies: {
+      screen: VacanciesScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Vacancies',
+      }),
+    },
   },
   {
     tabBarOptions: {
@@ -184,18 +162,29 @@ const TabNav = createMaterialTopTabNavigator(
       }
     }
   }
-);
+)
 
-const Nav = createStackNavigator(
+const Nav = StackNavigator(
   {
-    Events: TabNav,
-    Vacancies: TabNav,
-    Details: {
-      screen: DetailsScreen
-    }
+    Home: {
+      screen: TabNav,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Meet Mindera',
+      }),
+    },
+    Day: {
+      screen: DayScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Day'
+      }),
+    },
+    Options: {
+      screen: OptionsScreen,
+      navigationOptions: ({ navigation }) => ({}),
+    },
   },
   {
-    initialRouteName: 'Events',
+    initialRouteName: 'Home',
 
     /* The header config from HomeScreen is now here */
     navigationOptions: {
@@ -206,8 +195,7 @@ const Nav = createStackNavigator(
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-      headerTitle: 'Meet Mindera',
-      headerLeft: (
+      /*headerLeft: (
         <Button
           title="Menu"
           color="#0009"
@@ -219,10 +207,11 @@ const Nav = createStackNavigator(
           color="#fff0"
           onPress={() => alert('This is a button!')}
         />
-      ),
+      ),*/
     },
   }
 );
+
 
 export default class App extends React.Component {
   render() {
