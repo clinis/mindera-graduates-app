@@ -7,7 +7,7 @@
 import React from 'react';
 import { Button, View, Text, ListView, SectionList, FlatList, TouchableWithoutFeedback } from 'react-native';
 import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator } from 'react-navigation';
-import { Card } from 'react-native-elements'
+import { Card, ListItem } from 'react-native-elements'
 
 
 const events = [
@@ -17,6 +17,8 @@ const events = [
 ];
 
 const dayList = ["List 01", "List 02", "List 03", "List 04", "List 05", "List 06", "List 07", "List 08", "List 09", "List 10"]
+
+const listItems = ["Description 01", "Description 02", "Description 03", "Description 04", "Description 05", "Description 06", "Description 07"]
 
 class EventsScreen extends React.Component {
   constructor(props) {
@@ -64,16 +66,59 @@ class EventsScreen extends React.Component {
 }
 
 class DayScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: dayList
+    };
+  }
+
   render() {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Day Screen</Text>
+      <View>
+        {
+          this.state.list.map((l, i) => (
+            <TouchableWithoutFeedback
+              /*onPress={() => alert('This is a button!')}*/
+              onPress={() => this.props.navigation.navigate('DayList')}
+            >
+              <ListItem
+                key={i}
+                title={l}
+              />
+            </TouchableWithoutFeedback>
+          ))
+        }
+      </View>
+    );
+  }
+}
 
-        <Button
-          title="Go to Home"
-          onPress={() => this.props.navigation.navigate('Events')}
+class ListScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: listItems
+    };
+  }
+
+
+
+  render() {
+    return (
+      <View>
+        <FlatList
+          data={this.state.list}
+          renderItem={({item}) => (
+            <View>
+              <Card
+                containerStyle={{width: 160, height: 160}}
+              />
+              <Text>{item}</Text>
+            </View>
+          )}
+          numColumns={2}
         />
-
       </View>
     );
   }
@@ -176,6 +221,12 @@ const Nav = StackNavigator(
       screen: DayScreen,
       navigationOptions: ({ navigation }) => ({
         title: 'Day'
+      }),
+    },
+    DayList: {
+      screen: ListScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Day list'
       }),
     },
     Options: {
