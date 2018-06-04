@@ -6,9 +6,8 @@
 
 import React from 'react';
 import { Button, View, Text, ListView, SectionList, FlatList, TouchableWithoutFeedback } from 'react-native';
-import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator } from 'react-navigation';
+import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
 import { Card, ListItem } from 'react-native-elements'
-
 
 const events = [
   {title: "Open Day '18", data: ['Day 01', 'Day 02', 'Day 03', 'Day 4', 'Day 5']},
@@ -33,7 +32,6 @@ class EventsScreen extends React.Component {
       <View style={{flex: 1}}>
         <View style={{flex: 1, backgroundColor: 'lightgrey'}}
         />
-
         <View style={{flex: 2}}>
           <FlatList
             data={this.state.events}
@@ -45,8 +43,7 @@ class EventsScreen extends React.Component {
                   data={item.data}
                   renderItem={({item}) => (
                     <TouchableWithoutFeedback
-                      /*onPress={() => alert('This is a button!')}*/
-                      onPress={() => this.props.navigation.navigate('Day')}
+                      onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
                     >
                       <Card
                         title={item}
@@ -79,7 +76,6 @@ class DayScreen extends React.Component {
         {
           this.state.list.map((l, i) => (
             <TouchableWithoutFeedback
-              /*onPress={() => alert('This is a button!')}*/
               onPress={() => this.props.navigation.navigate('DayList')}
             >
               <ListItem
@@ -101,8 +97,6 @@ class ListScreen extends React.Component {
       list: listItems
     };
   }
-
-
 
   render() {
     return (
@@ -129,56 +123,23 @@ class VacanciesScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Vacancies Screen</Text>
-        <Button
-          title="Go to Options"
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            this.props.navigation.navigate('Options', {
-              itemId: 86,
-              otherParam: 'anything',
-            });
-          }}
-        />
       </View>
     );
   }
 }
 
-class OptionsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('otherParam', 'A Nested Details Screen'),
-    };
-  };
-
+class AboutScreen extends React.Component {
   render() {
-    /* 2. Get the param, provide a fallback value if not available */
-    const { navigation } = this.props;
-    const itemId = navigation.getParam('itemId', 'NO-ID');
-    const otherParam = navigation.getParam('otherParam', 'some default value');
-
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-        <Text>itemId: {JSON.stringify(itemId)}</Text>
-        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
-
+        <Text>Dinis Areias</Text>
         <Button
-          title="Go to Options... again"
-          onPress={() => this.props.navigation.push('Options')}
-        />
-        <Button
-          title="Go to Events (Home)"
+          title="Go Home"
           onPress={() => this.props.navigation.navigate('Home')}
         />
         <Button
           title="Go back"
           onPress={() => this.props.navigation.goBack()}
-        />
-
-        <Button
-          title="Update the title"
-          onPress={() => this.props.navigation.setParams({otherParam: 'Updated!'})}
         />
       </View>
     );
@@ -187,7 +148,7 @@ class OptionsScreen extends React.Component {
 
 const TabNav = TabNavigator(
   {
-    Home: {
+    Events: {
       screen: EventsScreen,
       navigationOptions: ({ navigation }) => ({
         title: 'Events',
@@ -198,7 +159,7 @@ const TabNav = TabNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Vacancies',
       }),
-    },
+    }
   },
   {
     tabBarOptions: {
@@ -209,35 +170,36 @@ const TabNav = TabNavigator(
   }
 )
 
-const Nav = StackNavigator(
+const StackNav = StackNavigator(
   {
-    Home: {
-      screen: TabNav,
+    Tabs: {
+      screen: ({ navigation }) => <TabNav screenProps={{ rootNavigation: navigation }} />,
       navigationOptions: ({ navigation }) => ({
         title: 'Meet Mindera',
-      }),
+        headerLeft: (
+          <Button
+            title="menu"
+            onPress={() => navigation.toggleDrawer()}
+          />
+
+        ),
+        headerRight: (
+          <Button
+            title="Search"
+            color="#fff0"
+            onPress={() => alert('This is a button!')}
+          />
+        ),
+      })
     },
     Day: {
-      screen: DayScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Day'
-      }),
+      screen: DayScreen
     },
     DayList: {
-      screen: ListScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Day list'
-      }),
-    },
-    Options: {
-      screen: OptionsScreen,
-      navigationOptions: ({ navigation }) => ({}),
+      screen: ListScreen
     },
   },
   {
-    initialRouteName: 'Home',
-
-    /* The header config from HomeScreen is now here */
     navigationOptions: {
       headerStyle: {
         backgroundColor: '#5c6b78',
@@ -245,21 +207,27 @@ const Nav = StackNavigator(
       headerTintColor: '#fff',
       headerTitleStyle: {
         fontWeight: 'bold',
-      },
-      /*headerLeft: (
-        <Button
-          title="Menu"
-          color="#0009"
-        />
-      ),
-      headerRight: (
-        <Button
-          title="Search"
-          color="#fff0"
-          onPress={() => alert('This is a button!')}
-        />
-      ),*/
+      }
+    }
+  }
+);
+
+const RootNav = DrawerNavigator(
+  {
+    Home: {
+      screen: StackNav
     },
+    About: {
+      screen: AboutScreen
+    },
+  },
+  {
+    drawerPosition: 'left',
+    drawerWidth: 200,
+    drawerBackgroundColor: '#23991b',
+    contentOptions: {
+      activeTintColor: '#99521d',
+    }
   }
 );
 
@@ -267,7 +235,7 @@ const Nav = StackNavigator(
 export default class App extends React.Component {
   render() {
     return (
-      <Nav />
+      <RootNav />
     )
   }
 }
