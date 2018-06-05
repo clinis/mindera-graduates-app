@@ -78,7 +78,7 @@ class DayScreen extends React.Component {
         data={this.state.list}
         renderItem={({item}) => (
           <TouchableHighlight
-            onPress={() => this.props.navigation.navigate('DayList')}
+            onPress={() => this.props.navigation.navigate('Gallery')}
           >
             <ListItem title={item} hideChevron />
           </TouchableHighlight>
@@ -88,7 +88,7 @@ class DayScreen extends React.Component {
   }
 }
 
-class ListScreen extends React.Component {
+class GalleryScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -98,20 +98,29 @@ class ListScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        <FlatList
-          data={this.state.list}
-          renderItem={({item}) => (
+      <FlatList
+        data={this.state.list}
+        contentContainerStyle={{
+          paddingLeft: 10,
+          paddingRight: 10
+        }}
+        renderItem={({item}) => (
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            width: 160,
+            minHeight: 160,
+            maxHeight: 200,
+            marginTop: 20
+          }}>
             <View>
-              <Card
-                containerStyle={{width: 160, height: 160}}
-              />
-              <Text>{item}</Text>
+              <View style={{height: 160, width: 160, backgroundColor:'darkgrey'}} />
+              <Text style={{marginTop: 5}}>{item}</Text>
             </View>
-          )}
-          numColumns={2}
-        />
-      </View>
+          </View>
+        )}
+        numColumns={2}
+      />
     );
   }
 }
@@ -196,8 +205,8 @@ const StackNav = StackNavigator(
     Day: {
       screen: DayScreen
     },
-    DayList: {
-      screen: ListScreen
+    Gallery: {
+      screen: GalleryScreen
     },
   },
   {
