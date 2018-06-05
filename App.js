@@ -31,35 +31,34 @@ class EventsScreen extends React.Component {
 
   render() {
     return (
-      <View style={{flex: 1}}>
-        <View style={{flex: 1, backgroundColor: 'lightgrey'}}
+      <ScrollView style={{flex: 1}}>
+        <View
+          style={{height:200, backgroundColor:'lightgrey'}}
         />
-        <View style={{flex: 2}}>
-          <FlatList
-            data={this.state.events}
-            renderItem={({item}) => (
-              <View style={{marginTop: 20}}>
-                <Text style={{fontWeight: 'bold', marginLeft: 15}}>{item.title}</Text>
-                <FlatList
-                  horizontal
-                  data={item.data}
-                  renderItem={({item}) => (
-                    <TouchableWithoutFeedback
-                      onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
-                    >
-                      <Card
-                        title={item}
-                        containerStyle={{paddingTop: 120, height: 160, width: 130, marginHorizontal: 5}}
-                        dividerStyle={{display: 'none'}}
-                      />
-                    </TouchableWithoutFeedback>
-                  )}
-                />
-              </View>
-            )}
-          />
-        </View>
-      </View>
+        <FlatList
+          data={this.state.events}
+          renderItem={({item}) => (
+            <View style={{marginTop: 20}}>
+              <Text style={{fontWeight: 'bold', marginLeft: 15}}>{item.title}</Text>
+              <FlatList
+                horizontal
+                data={item.data}
+                renderItem={({item}) => (
+                  <TouchableHighlight
+                    onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
+                  >
+                    <Card
+                      title={item}
+                      containerStyle={{paddingTop: 120, height: 160, width: 130, marginHorizontal: 5}}
+                      dividerStyle={{display: 'none'}}
+                    />
+                  </TouchableHighlight>
+                )}
+              />
+            </View>
+          )}
+        />
+      </ScrollView>
     );
   }
 }
@@ -74,21 +73,18 @@ class DayScreen extends React.Component {
 
   render() {
     return (
-      <View>
-        {
-          this.state.list.map((l, i) => (
-            <TouchableHighlight
-              onPress={() => this.props.navigation.navigate('DayList')}
-            >
-              <ListItem
-                key={i}
-                title={l}
-              />
-            </TouchableHighlight>
-          ))
-        }
-      </View>
-    );
+      <FlatList
+        keyExtractor={this.keyExtractor}
+        data={this.state.list}
+        renderItem={({item}) => (
+          <TouchableHighlight
+            onPress={() => this.props.navigation.navigate('DayList')}
+          >
+            <ListItem title={item} hideChevron />
+          </TouchableHighlight>
+        )}
+      />
+    )
   }
 }
 
