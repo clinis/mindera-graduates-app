@@ -5,8 +5,8 @@
  */
 
 import React from 'react';
-import { Button, View, Text, ListView, SectionList, FlatList, ScrollView, Image, TouchableHighlight } from 'react-native';
-import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
+import { Button, View, Text, FlatList, ScrollView, TouchableHighlight } from 'react-native';
+import { createStackNavigator, createMaterialTopTabNavigator, createDrawerNavigator } from 'react-navigation';
 import { ListItem } from 'react-native-elements'
 import { Icon } from 'react-native-elements'
 
@@ -162,49 +162,55 @@ class AboutScreen extends React.Component {
   }
 }
 
-const TabNav = TabNavigator(
+const TabNav = createMaterialTopTabNavigator(
   {
     Events: {
       screen: EventsScreen,
       navigationOptions: ({ navigation }) => ({
-        title: 'Events',
+        title: 'Events'
       }),
     },
     Vacancies: {
       screen: VacanciesScreen,
       navigationOptions: ({ navigation }) => ({
-        title: 'Vacancies',
+        title: 'Vacancies'
       }),
     }
   },
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#5c6b78',
-      }
+        backgroundColor: '#5c6b78'
+      },
+      indicatorStyle: {
+        backgroundColor: '#ffffff'
+      },
+      upperCaseLabel: false
     }
   }
 )
 
-const StackNav = StackNavigator(
+const StackNav = createStackNavigator(
   {
     Tabs: {
       screen: ({ navigation }) => <TabNav screenProps={{ rootNavigation: navigation }} />,
       navigationOptions: ({ navigation }) => ({
         title: 'Meet Mindera',
         headerLeft: (
-          <TouchableHighlight onPress={() => navigation.toggleDrawer()}>
-            <Icon
-              name="menu"
-            />
-          </TouchableHighlight>
+          <Icon
+            name="menu"
+            color='#ffffff'
+            containerStyle={{marginLeft: 10}}
+            onPress={() => navigation.toggleDrawer()}
+          />
         ),
         headerRight: (
-          <TouchableHighlight onPress={() => alert('You found it!')}>
-            <Icon
-              name="search"
-            />
-          </TouchableHighlight>
+          <Icon
+            name="search"
+            color='#ffffff'
+            containerStyle={{marginRight: 10}}
+            onPress={() => alert('You found it!')}
+          />
         ),
       })
     },
@@ -218,17 +224,17 @@ const StackNav = StackNavigator(
   {
     navigationOptions: {
       headerStyle: {
-        backgroundColor: '#5c6b78',
+        backgroundColor: '#5c6b78'
       },
-      headerTintColor: '#fff',
+      headerTintColor: '#ffffff',
       headerTitleStyle: {
-        fontWeight: 'bold',
+        fontWeight: 'bold'
       }
     }
   }
 );
 
-const RootNav = DrawerNavigator(
+const RootNav = createDrawerNavigator(
   {
     Home: {
       screen: StackNav
@@ -239,10 +245,10 @@ const RootNav = DrawerNavigator(
   },
   {
     drawerPosition: 'left',
-    drawerWidth: 250,
-    drawerBackgroundColor: '#beba32',
+    drawerWidth: 200,
+    drawerBackgroundColor: '#f8cc21',
     contentOptions: {
-      activeTintColor: '#ffffff',
+      activeTintColor: '#ffffff'
     }
   }
 );
