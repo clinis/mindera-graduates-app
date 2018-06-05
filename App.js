@@ -9,17 +9,24 @@ import { Button, View, Text, FlatList, ScrollView, TouchableHighlight } from 're
 import { createStackNavigator, createMaterialTopTabNavigator, createDrawerNavigator } from 'react-navigation';
 import { ListItem } from 'react-native-elements'
 import { Icon } from 'react-native-elements'
+import { YellowBox } from 'react-native'
 
 
 const events = [
-  {title: "Open Day '18", data: ['Day 01', 'Day 02', 'Day 03', 'Day 4', 'Day 5']},
-  {title: "Graduate Program", data: ['First day', 'Second day', 'Last day']},
-  {title: 'Meet Mindera Code & Culture', data: ['Day 19', 'Day 20']},
+  {title: "Open Day '18", days: ['Day 01', 'Day 02', 'Day 03', 'Day 4', 'Day 5']},
+  {title: "Graduate Program", days: ['First day', 'Second day', 'Last day']},
+  {title: 'Meet Mindera Code & Culture', days: ['Day 19', 'Day 20']},
 ];
 
 const dayList = ["List 01", "List 02", "List 03", "List 04", "List 05", "List 06", "List 07", "List 08", "List 09", "List 10"]
 
-const listItems = ["Description 01", "Description 02", "Description 03", "Description 04", "Description 05", "Description 06", "Description 07"]
+const listItems = ["Description 01", "Description 02", "Description 03", "Description 04", "Description 05", "Description 06", "Description 07", "Description 08"]
+
+// ignore warnings due to known react native issues
+YellowBox.ignoreWarnings([
+  'Warning: isMounted', /* see: https://github.com/oblador/react-native-collapsible/issues/167 */
+]);
+
 
 class EventsScreen extends React.Component {
   constructor(props) {
@@ -42,7 +49,7 @@ class EventsScreen extends React.Component {
               <Text style={{fontWeight: '400', fontSize: 18}}>{item.title}</Text>
               <FlatList
                 horizontal
-                data={item.data}
+                data={item.days}
                 renderItem={({item}) => (
                   <TouchableHighlight
                     onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
@@ -58,9 +65,11 @@ class EventsScreen extends React.Component {
                     </View>
                   </TouchableHighlight>
                 )}
+                keyExtractor={(item) => item}
               />
             </View>
           )}
+          keyExtractor={(item) => item.title}
         />
       </ScrollView>
     );
@@ -78,7 +87,6 @@ class DayScreen extends React.Component {
   render() {
     return (
       <FlatList
-        keyExtractor={this.keyExtractor}
         data={this.state.list}
         renderItem={({item}) => (
           <View style={{ marginLeft: 10, marginRight: 10}}>
@@ -89,6 +97,7 @@ class DayScreen extends React.Component {
             />
           </View>
         )}
+        keyExtractor={(item) => item}
       />
     )
   }
@@ -126,6 +135,7 @@ class GalleryScreen extends React.Component {
           </View>
         )}
         numColumns={2}
+        keyExtractor={(item) => item}
       />
     );
   }
