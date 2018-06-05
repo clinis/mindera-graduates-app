@@ -7,7 +7,7 @@
 import React from 'react';
 import { Button, View, Text, ListView, SectionList, FlatList, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
-import { Card, ListItem } from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
 import { Icon } from 'react-native-elements'
 
 
@@ -81,11 +81,13 @@ class DayScreen extends React.Component {
         keyExtractor={this.keyExtractor}
         data={this.state.list}
         renderItem={({item}) => (
-          <TouchableHighlight
-            onPress={() => this.props.navigation.navigate('Gallery')}
-          >
-            <ListItem title={item} hideChevron />
-          </TouchableHighlight>
+          <View style={{ marginLeft: 10, marginRight: 10}}>
+            <ListItem
+              title={<Text style={{marginTop: 8, marginBottom: 8}}>{item}</Text>}
+              hideChevron
+              onPress={() => this.props.navigation.navigate('Gallery')}
+            />
+          </View>
         )}
       />
     )
