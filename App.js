@@ -27,6 +27,45 @@ YellowBox.ignoreWarnings([
   'Warning: isMounted', /* see: https://github.com/oblador/react-native-collapsible/issues/167 */
 ]);
 
+class Event extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handlePress = this.handlePress.bind(this);
+  }
+
+  handlePress = (day) => {
+    this.props.nav.navigate('Day', {event: this.props.eventName, day: day})
+  }
+
+  render() {
+    return (
+      <View>
+        <FlatList
+          horizontal
+          data={this.props.eventDays}
+          renderItem={({item }) => (
+            <TouchableHighlight
+              onPress={() => this.handlePress(item)}
+            >
+              <View style={{
+                marginTop: 5,
+                marginRight: 15,
+                width: 130,
+                height: 160,
+                backgroundColor: 'darkgrey'
+              }}>
+                <Text style={{marginTop: 125, textAlign: 'center', fontSize: 18, fontWeight: "300", color: 'white'}}>{item}</Text>
+              </View>
+            </TouchableHighlight>
+          )}
+          keyExtractor={(item) => item}
+        />
+      </View>
+    )
+  }
+}
+
 
 class EventsScreen extends React.Component {
   constructor(props) {
@@ -47,25 +86,10 @@ class EventsScreen extends React.Component {
           renderItem={({item}) => (
             <View style={{marginTop: 20, marginLeft: 15}}>
               <Text style={{fontWeight: '400', fontSize: 18}}>{item.title}</Text>
-              <FlatList
-                horizontal
-                data={item.days}
-                renderItem={({item}) => (
-                  <TouchableHighlight
-                    onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
-                  >
-                    <View style={{
-                      marginTop: 5,
-                      marginRight: 15,
-                      width: 130,
-                      height: 160,
-                      backgroundColor: 'darkgrey'
-                    }}>
-                      <Text style={{marginTop: 125, textAlign: 'center', fontSize: 18, fontWeight: "300", color: 'white'}}>{item}</Text>
-                    </View>
-                  </TouchableHighlight>
-                )}
-                keyExtractor={(item) => item}
+              <Event
+                eventName = {item.title}
+                eventDays = {item.days}
+                nav = {this.props.screenProps.rootNavigation}
               />
             </View>
           )}
@@ -80,9 +104,21 @@ class DayScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: dayList
+      list: dayList,
     };
+
+    this.handlePress = this.handlePress.bind(this);
   }
+
+  handlePress = (list) => {
+    this.props.navigation.navigate('Gallery', {list: list})
+  }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('event', 'Event') + " _ " + navigation.getParam('day', 'day')
+    };
+  };
 
   render() {
     return (
@@ -93,7 +129,7 @@ class DayScreen extends React.Component {
             <ListItem
               title={<Text style={{marginTop: 8, marginBottom: 8}}>{item}</Text>}
               hideChevron
-              onPress={() => this.props.navigation.navigate('Gallery')}
+              onPress={() => this.handlePress(item)}
             />
           </View>
         )}
@@ -110,6 +146,12 @@ class GalleryScreen extends React.Component {
       list: listItems
     };
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('list', 'List')
+    };
+  };
 
   render() {
     return (
