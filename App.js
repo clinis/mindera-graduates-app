@@ -33,13 +33,13 @@ class EventsScreen extends React.Component {
     return (
       <ScrollView style={{flex: 1}}>
         <View
-          style={{height:200, backgroundColor:'lightgrey'}}
+          style={{height:200, backgroundColor:'darkgrey'}}
         />
         <FlatList
           data={this.state.events}
           renderItem={({item}) => (
-            <View style={{marginTop: 20}}>
-              <Text style={{fontWeight: 'bold', marginLeft: 15}}>{item.title}</Text>
+            <View style={{marginTop: 20, marginLeft: 15}}>
+              <Text style={{fontWeight: '400', fontSize: 18}}>{item.title}</Text>
               <FlatList
                 horizontal
                 data={item.data}
@@ -47,11 +47,15 @@ class EventsScreen extends React.Component {
                   <TouchableHighlight
                     onPress={() => this.props.screenProps.rootNavigation.navigate('Day')}
                   >
-                    <Card
-                      title={item}
-                      containerStyle={{paddingTop: 120, height: 160, width: 130, marginHorizontal: 5}}
-                      dividerStyle={{display: 'none'}}
-                    />
+                    <View style={{
+                      marginTop: 5,
+                      marginRight: 15,
+                      width: 130,
+                      height: 160,
+                      backgroundColor: 'darkgrey'
+                    }}>
+                      <Text style={{marginTop: 125, textAlign: 'center', fontSize: 18, fontWeight: "300", color: 'white'}}>{item}</Text>
+                    </View>
                   </TouchableHighlight>
                 )}
               />
