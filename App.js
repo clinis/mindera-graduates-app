@@ -5,9 +5,11 @@
  */
 
 import React from 'react';
-import { Button, View, Text, ListView, SectionList, FlatList, TouchableWithoutFeedback } from 'react-native';
+import { Button, View, Text, ListView, SectionList, FlatList, ScrollView, Image, TouchableHighlight } from 'react-native';
 import { createStackNavigator, createMaterialTopTabNavigator, StackNavigator, TabNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
 import { Card, ListItem } from 'react-native-elements'
+import { Icon } from 'react-native-elements'
+
 
 const events = [
   {title: "Open Day '18", data: ['Day 01', 'Day 02', 'Day 03', 'Day 4', 'Day 5']},
@@ -75,14 +77,14 @@ class DayScreen extends React.Component {
       <View>
         {
           this.state.list.map((l, i) => (
-            <TouchableWithoutFeedback
+            <TouchableHighlight
               onPress={() => this.props.navigation.navigate('DayList')}
             >
               <ListItem
                 key={i}
                 title={l}
               />
-            </TouchableWithoutFeedback>
+            </TouchableHighlight>
           ))
         }
       </View>
@@ -133,6 +135,9 @@ class AboutScreen extends React.Component {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Dinis Areias</Text>
+        <Icon
+          name="person"
+        />
         <Button
           title="Go Home"
           onPress={() => this.props.navigation.navigate('Home')}
@@ -177,18 +182,18 @@ const StackNav = StackNavigator(
       navigationOptions: ({ navigation }) => ({
         title: 'Meet Mindera',
         headerLeft: (
-          <Button
-            title="menu"
-            onPress={() => navigation.toggleDrawer()}
-          />
-
+          <TouchableHighlight onPress={() => navigation.toggleDrawer()}>
+            <Icon
+              name="menu"
+            />
+          </TouchableHighlight>
         ),
         headerRight: (
-          <Button
-            title="Search"
-            color="#fff0"
-            onPress={() => alert('This is a button!')}
-          />
+          <TouchableHighlight onPress={() => alert('You found it!')}>
+            <Icon
+              name="search"
+            />
+          </TouchableHighlight>
         ),
       })
     },
@@ -223,10 +228,10 @@ const RootNav = DrawerNavigator(
   },
   {
     drawerPosition: 'left',
-    drawerWidth: 200,
-    drawerBackgroundColor: '#23991b',
+    drawerWidth: 250,
+    drawerBackgroundColor: '#beba32',
     contentOptions: {
-      activeTintColor: '#99521d',
+      activeTintColor: '#ffffff',
     }
   }
 );
