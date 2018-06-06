@@ -13,19 +13,10 @@ YellowBox.ignoreWarnings([
   'Warning: isMounted', /* see: https://github.com/oblador/react-native-collapsible/issues/167 */
 ]);
 
-
-class Ho extends React.Component {
-  render() {
-    return (
-      <RootNav />
-    )
-  }
-}
-
 export default class App extends React.Component {
   render() {
     return (
-      <Ho />
+      <RootNav />
     )
   }
 }

@@ -1,38 +1,48 @@
 import React from 'react'
-import { FlatList, ScrollView, Text, View } from 'react-native'
-import { Event } from '../components/event'
 
-import { events } from '../data'
+import { getEvents } from '../components/api'
+import WithLoading from '../components/withLoading'
+import { EventsGallery } from '../components/eventsGallery'
+
+const EventsGalleryWithLoading = WithLoading(EventsGallery);
 
 export class EventsScreen extends React.Component {
+  _mounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
-      events: events
+      loading: false,
+      events: []
     };
+  }
+
+  componentDidMount() {
+    this._mounted = true;
+
+    this.setState({ loading: true });
+    getEvents()
+      .then((ev) => {
+        if (this._mounted) {
+          this.setState({
+            loading: false,
+            events: ev
+          })
+        }
+      })
+  }
+
+  componentWillUnmount() {
+    this._mounted = false;
   }
 
   render() {
     return (
-      <ScrollView style={{flex: 1}}>
-        <View
-          style={{height:200, backgroundColor:'darkgrey'}}
-        />
-        <FlatList
-          data={this.state.events}
-          renderItem={({item}) => (
-            <View style={{marginTop: 20, marginLeft: 15}}>
-              <Text style={{fontWeight: '400', fontSize: 18}}>{item.title}</Text>
-              <Event
-                eventName = {item.title}
-                eventDays = {item.days}
-                nav = {this.props.screenProps.rootNavigation}
-              />
-            </View>
-          )}
-          keyExtractor={(item) => item.title}
-        />
-      </ScrollView>
+      <EventsGalleryWithLoading
+        isLoading={this.state.loading}
+        events={this.state.events}
+        nav={this.props.screenProps.rootNavigation}
+      />
     );
   }
 }

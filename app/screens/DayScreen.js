@@ -1,13 +1,15 @@
 import React from 'react'
-import { dayList } from '../data'
 import { FlatList, Text, View } from 'react-native'
 import { ListItem } from 'react-native-elements'
+
+import { getDayLists } from '../components/api'
+
 
 export class DayScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: dayList,
+      list: getDayLists(),
     };
 
     this.handlePress = this.handlePress.bind(this);
