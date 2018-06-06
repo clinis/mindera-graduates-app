@@ -1,24 +1,23 @@
 import React from 'react'
 import { FlatList, Text, View } from 'react-native'
-import { listItem } from 'react-native-elements'
 
 import { getListItems } from '../components/api'
 
 export class GalleryScreen extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       list: getListItems()
-    };
+    }
   }
 
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: navigation.getParam('list', 'List')
-    };
-  };
+    }
+  }
 
-  render() {
+  render () {
     return (
       <FlatList
         data={this.state.list}
@@ -36,7 +35,7 @@ export class GalleryScreen extends React.Component {
             marginTop: 20
           }}>
             <View>
-              <View style={{height: 160, width: 160, backgroundColor:'darkgrey'}} />
+              <View style={{height: 160, width: 160, backgroundColor: 'darkgrey'}}/>
               <Text style={{marginTop: 5}}>{item}</Text>
             </View>
           </View>
@@ -44,6 +43,6 @@ export class GalleryScreen extends React.Component {
         numColumns={2}
         keyExtractor={(item) => item}
       />
-    );
+    )
   }
 }

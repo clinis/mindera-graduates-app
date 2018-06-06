@@ -11,12 +11,12 @@ import { RootNav } from './config/router'
 // ignore warnings due to known react native issues
 YellowBox.ignoreWarnings([
   'Warning: isMounted', /* see: https://github.com/oblador/react-native-collapsible/issues/167 */
-]);
+])
 
 export default class App extends React.Component {
-  render() {
+  render () {
     return (
-      <RootNav />
+      <RootNav/>
     )
   }
 }

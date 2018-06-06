@@ -4,23 +4,23 @@ import { getEvents } from '../components/api'
 import WithLoading from '../components/withLoading'
 import { EventsGallery } from '../components/eventsGallery'
 
-const EventsGalleryWithLoading = WithLoading(EventsGallery);
+const EventsGalleryWithLoading = WithLoading(EventsGallery)
 
 export class EventsScreen extends React.Component {
-  _mounted = false;
+  _mounted = false
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loading: false,
       events: []
-    };
+    }
   }
 
-  componentDidMount() {
-    this._mounted = true;
+  componentDidMount () {
+    this._mounted = true
 
-    this.setState({ loading: true });
+    this.setState({loading: true})
     getEvents()
       .then((ev) => {
         if (this._mounted) {
@@ -32,23 +32,23 @@ export class EventsScreen extends React.Component {
       })
   }
 
-  componentWillUnmount() {
-    this._mounted = false;
+  componentWillUnmount () {
+    this._mounted = false
   }
 
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: 'Events'
-    };
-  };
+    }
+  }
 
-  render() {
+  render () {
     return (
       <EventsGalleryWithLoading
         isLoading={this.state.loading}
         events={this.state.events}
         nav={this.props.screenProps.rootNavigation}
       />
-    );
+    )
   }
 }

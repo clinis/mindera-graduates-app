@@ -33,14 +33,14 @@ export const TabNav = createMaterialTopTabNavigator(
 export const StackNav = createStackNavigator(
   {
     Tabs: {
-      screen: ({ navigation }) => <TabNav screenProps={{ rootNavigation: navigation }} />,
-      navigationOptions: ({ navigation }) => ({
+      screen: ({navigation}) => <TabNav screenProps={{rootNavigation: navigation}}/>,
+      navigationOptions: ({navigation}) => ({
         title: 'Meet Mindera',
         headerLeft: (
           <Icon
             name="menu"
             color='#ffffff'
-            containerStyle={{marginLeft: 10}}
+            containerStyle={{marginLeft: 15}}
             onPress={() => navigation.toggleDrawer()}
           />
         ),
@@ -48,7 +48,7 @@ export const StackNav = createStackNavigator(
           <Icon
             name="search"
             color='#ffffff'
-            containerStyle={{marginRight: 10}}
+            containerStyle={{marginRight: 15}}
             onPress={() => alert('You found it!')}
           />
         ),
@@ -72,7 +72,7 @@ export const StackNav = createStackNavigator(
       }
     }
   }
-);
+)
 
 export const RootNav = createDrawerNavigator(
   {
@@ -95,4 +95,4 @@ export const RootNav = createDrawerNavigator(
       activeTintColor: '#ffffff'
     }
   }
-);
+)

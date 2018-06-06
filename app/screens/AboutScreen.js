@@ -3,7 +3,7 @@ import { Text, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 
 export class AboutScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: 'About this app',
       headerStyle: {
@@ -21,14 +21,14 @@ export class AboutScreen extends React.Component {
           onPress={() => navigation.toggleDrawer()}
         />
       )
-    };
-  };
+    }
+  }
 
-  render() {
+  render () {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <View>
-          <Icon name="info"/>
+          <Icon name="extension"/>
           <Text>Mindera Graduate Program React Native App</Text>
         </View>
         <View style={{marginTop: 15}}>
@@ -40,6 +40,6 @@ export class AboutScreen extends React.Component {
           <Text>dinis.areias@gmail.com</Text>
         </View>
       </View>
-    );
+    )
   }
 }
