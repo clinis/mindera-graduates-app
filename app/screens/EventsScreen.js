@@ -36,6 +36,12 @@ export class EventsScreen extends React.Component {
     this._mounted = false;
   }
 
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Events'
+    };
+  };
+
   render() {
     return (
       <EventsGalleryWithLoading

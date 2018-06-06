@@ -1,6 +1,6 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Mindera Graduate Program React Native App
+ * https://github.com/clinis/mindera-graduates-app
  * @flow
  */
 

@@ -11,16 +11,10 @@ import { AboutScreen } from '../screens/AboutScreen'
 export const TabNav = createMaterialTopTabNavigator(
   {
     Events: {
-      screen: EventsScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Events'
-      }),
+      screen: EventsScreen
     },
     Vacancies: {
-      screen: VacanciesScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Vacancies'
-      }),
+      screen: VacanciesScreen
     }
   },
   {
@@ -86,8 +80,12 @@ export const RootNav = createDrawerNavigator(
       screen: StackNav
     },
     About: {
-      screen: AboutScreen
-    },
+      screen: createStackNavigator({
+        About: {
+          screen: AboutScreen
+        }
+      })
+    }
   },
   {
     drawerPosition: 'left',
